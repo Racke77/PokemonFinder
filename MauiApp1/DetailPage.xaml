@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiApp1.ViewModels"
+             x:DataType="vm:DetailVM"
+             x:Class="MauiApp1.DetailPage"
+             Title="{Binding Pokemon.Name}">
+    <VerticalStackLayout>
+        <HorizontalStackLayout>
+            <Image Source="{Binding Pokemon.Image}" HeightRequest="200" WidthRequest="200" Aspect="AspectFill" Margin="0,0,10,0"></Image>
+            <Grid RowDefinitions="auto,auto,auto,auto,auto,auto,auto" ColumnDefinitions="*,*">
+                <Label Grid.ColumnSpan="2" FontSize="Large" HorizontalTextAlignment="Center" Text="{Binding Pokemon.Typing}"></Label>
+                <Label Grid.Row="1" Grid.Column="0" Text="HP"></Label>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Pokemon.HP}"></Label>
+                <Label Grid.Row="2" Grid.Column="0" Text="ATK"></Label>
+                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pokemon.ATK}"></Label>
+                <Label Grid.Row="3" Grid.Column="0" Text="DEF"></Label>
+                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Pokemon.DEF}"></Label>
+                <Label Grid.Row="4" Grid.Column="0" Text="Sp.ATK" Margin="0,0,20,0"></Label>
+                <Label Grid.Row="4" Grid.Column="1" Text="{Binding Pokemon.SpATK}"></Label>
+                <Label Grid.Row="5" Grid.Column="0" Text="Sp.DEF"></Label>
+                <Label Grid.Row="5" Grid.Column="1" Text="{Binding Pokemon.SpDEF}"></Label>
+                <Label Grid.Row="6" Grid.Column="0" Text="Speed"></Label>
+                <Label Grid.Row="6" Grid.Column="1" Text="{Binding Pokemon.Speed}"></Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <Label Margin="20,10" Text="{Binding Pokemon.Descriptions[0]}"></Label>
+        <!--<CollectionView ItemsSource="{Binding Pokemon.Descriptions}">
+        </CollectionView>-->
+    </VerticalStackLayout>
+</ContentPage>
