@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiApp1.Models"
              xmlns:vm="clr-namespace:MauiApp1.ViewModels"
              x:DataType="vm:DetailVM"
              x:Class="MauiApp1.DetailPage"
@@ -24,8 +25,18 @@
                 <Label Grid.Row="6" Grid.Column="1" Text="{Binding Pokemon.Speed}"></Label>
             </Grid>
         </HorizontalStackLayout>
-        <Label Margin="20,10" Text="{Binding Pokemon.Descriptions[0]}"></Label>
-        <!--<CollectionView ItemsSource="{Binding Pokemon.Descriptions}">
-        </CollectionView>-->
+
+        <CollectionView HeightRequest="500" Margin="20,10" ItemsSource="{Binding Pokemon.Descriptions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PokedexEntry">
+                    <Grid ColumnDefinitions="*" RowDefinitions="auto,auto" Margin="0,10,0,10">
+                        <Label Text="{Binding Game}"></Label>
+                        <Border  Grid.Row="1" >
+                            <Label LineBreakMode="WordWrap" Text="{Binding Description}"></Label>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

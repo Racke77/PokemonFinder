@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace MauiApp1.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<string> Descriptions { get; set; } = new List<string>();
+        public ObservableCollection<PokedexEntry> Descriptions { get; set; } = new ObservableCollection<PokedexEntry>();
         public string Image { get; set; }
         public string Typing { get; set; }
         public List<string> Abilities { get; set; } = new List<string>();

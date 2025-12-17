@@ -142,9 +142,15 @@ namespace MauiApp1.API
                 var language = languageEntry["name"].ToString();
                 if(language == "en") //only include english entries
                 {
-                    var flavorText = entry["flavor_text"].ToString();
-                    var edited = ApiCorrections.RemoveRowChange(flavorText);
-                    pokemon.Descriptions.Add(edited);
+                    var dexEntry = new PokedexEntry();
+
+                    var gameEntry = entry["version"]; //get the Game
+                    var gameName = gameEntry["name"].ToString();
+                    dexEntry.Game=ApiCorrections.CapitalizeFirstLetter(gameName);
+
+                    var flavorText = entry["flavor_text"].ToString(); //get the Text
+                    dexEntry.Description = ApiCorrections.RemoveRowChange(flavorText);
+                    pokemon.Descriptions.Add(dexEntry);
                 }
             }
             return pokemon;

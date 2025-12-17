@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MauiApp1.Models;
+using System.Collections.ObjectModel;
 
 namespace MauiApp1.ViewModels
 {
@@ -8,5 +9,6 @@ namespace MauiApp1.ViewModels
     {
         [ObservableProperty]
         PokemonDTO pokemon;
+
     }
 }
