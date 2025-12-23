@@ -15,7 +15,7 @@ namespace MauiApp1.API
         {
             List<PokemonDTO> pokemons = new List<PokemonDTO>();
 
-            for (int i = firstPokemon; i < lastPokemon;)
+            for (int i = firstPokemon; i < lastPokemon +1;)
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("https://pokeapi.co/api/v2/");
