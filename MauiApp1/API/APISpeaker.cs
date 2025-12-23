@@ -15,7 +15,7 @@ namespace MauiApp1.API
         {
             List<PokemonDTO> pokemons = new List<PokemonDTO>();
 
-            for (int i = firstPokemon; i < lastPokemon +1;)
+            for (int i = firstPokemon; i < lastPokemon + 1;)
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("https://pokeapi.co/api/v2/");
@@ -26,31 +26,34 @@ namespace MauiApp1.API
 
                 for (int j = 0; j < 20; j++) //only call 20 pokemon at a time -> don't DDOS the API
                 {
-                    var fullString = await client.GetStringAsync($"pokemon/{i}/"); //get everything for single pokemon
-                    var pokedexString = await client.GetStringAsync($"pokemon-species/{i}/");
-
-                    if (fullString is null || pokedexString is null) { return pokemons; }
-
-                    var pokemon = new PokemonDTO();
-
-                    //POKEMON NAME
-                    var name = JObject.Parse(fullString)["name"].ToString();
-                    pokemon.Name = ApiCorrections.CapitalizeFirstLetter(name);
-                    //POKEMON ID
-                    pokemon.Id = Int32.Parse(JObject.Parse(fullString)["id"].ToString());
-
-                    pokemon = GetPokemonTypes(fullString, pokemon); //GETTING TYPES
-                    pokemon = GetPokemonStats(fullString, pokemon); //GETTING THE STATS
-                    pokemon = GetPokemonAbilities(fullString, pokemon); //GETTING ABILITIES
-                    pokemon = GetPokemonPicture(fullString, pokemon); //GETTING PICTURE
-                    pokemon = GetPokedexDescriptions(pokedexString, pokemon); //GETTING DESCRIPTIONS
-
-                    pokemons.Add(pokemon);
-
-                    i++;
-                    if (i == lastPokemon)
+                    if (i == lastPokemon + 1)
                     {
                         j = 20; //if we hit the "full limit" mid-operation, abort operation
+                    }
+                    else
+                    {
+                        var fullString = await client.GetStringAsync($"pokemon/{i}/"); //get everything for single pokemon
+                        var pokedexString = await client.GetStringAsync($"pokemon-species/{i}/");
+
+                        if (fullString is null || pokedexString is null) { return pokemons; }
+
+                        var pokemon = new PokemonDTO();
+
+                        //POKEMON NAME
+                        var name = JObject.Parse(fullString)["name"].ToString();
+                        pokemon.Name = ApiCorrections.CapitalizeFirstLetter(name);
+                        //POKEMON ID
+                        pokemon.Id = Int32.Parse(JObject.Parse(fullString)["id"].ToString());
+
+                        pokemon = GetPokemonTypes(fullString, pokemon); //GETTING TYPES
+                        pokemon = GetPokemonStats(fullString, pokemon); //GETTING THE STATS
+                        pokemon = GetPokemonAbilities(fullString, pokemon); //GETTING ABILITIES
+                        pokemon = GetPokemonPicture(fullString, pokemon); //GETTING PICTURE
+                        pokemon = GetPokedexDescriptions(pokedexString, pokemon); //GETTING DESCRIPTIONS
+
+                        pokemons.Add(pokemon);
+
+                        i++;
                     }
                 }
                 client.Dispose();//CLOSE API -> then reopen it for another 20 pokemon
@@ -132,21 +135,21 @@ namespace MauiApp1.API
             var gen = JObject.Parse(pokedexString)["generation"];
             pokemon.Generation = gen["name"].ToString(); //wrong capitalization -> fix maybe
 
-            var dex = JObject.Parse(pokedexString)["flavor_text_entries"];            
+            var dex = JObject.Parse(pokedexString)["flavor_text_entries"];
             var forCount = dex.ToString();
             var split = forCount.Split("flavor_text"); //making sure we don't miss any
             for (int p = 0; p < split.Length - 1; p++)
-            {                
+            {
                 var entry = dex[p];
                 var languageEntry = entry["language"];
                 var language = languageEntry["name"].ToString();
-                if(language == "en") //only include english entries
+                if (language == "en") //only include english entries
                 {
                     var dexEntry = new PokedexEntry();
 
                     var gameEntry = entry["version"]; //get the Game
                     var gameName = gameEntry["name"].ToString();
-                    dexEntry.Game=ApiCorrections.CapitalizeFirstLetter(gameName);
+                    dexEntry.Game = ApiCorrections.CapitalizeFirstLetter(gameName);
 
                     var flavorText = entry["flavor_text"].ToString(); //get the Text
                     dexEntry.Description = ApiCorrections.RemoveRowChange(flavorText);
